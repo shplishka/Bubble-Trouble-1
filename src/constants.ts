@@ -13,11 +13,12 @@ const getCanvasDimensions = () => {
   if (mobile) {
     // Mobile: responsive sizing that scales with screen
     const padding = 20;
-    const controlsSpace = 120; // Space reserved for mobile controls
+    const controlsSpace = 140; // Space reserved for mobile controls
+    const topUISpace = 100; // Space for score/lives at top
     
     return {
       CANVAS_WIDTH: Math.min(availableWidth - padding, Math.max(350, availableWidth * 0.95)),
-      CANVAS_HEIGHT: Math.min(availableHeight - controlsSpace, Math.max(400, (availableHeight - controlsSpace) * 0.9)),
+      CANVAS_HEIGHT: Math.min(availableHeight - controlsSpace - topUISpace, Math.max(350, (availableHeight - controlsSpace - topUISpace) * 0.8)),
     };
   } else {
     // Desktop: use the original logic
@@ -35,8 +36,8 @@ const getPlayerDimensions = () => {
   const mobile = isMobile();
   if (mobile) {
     return {
-      PLAYER_WIDTH: 40, // Slightly larger on mobile
-      PLAYER_HEIGHT: 70,
+      PLAYER_WIDTH: 60, // Much larger on mobile for visibility
+      PLAYER_HEIGHT: 90,
     };
   } else {
     return {

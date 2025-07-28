@@ -24,20 +24,26 @@ export class MobileControls {
 
     // Check if elements exist
     if (!this.leftBtn || !this.rightBtn || !this.shootBtn) {
-      console.warn('Mobile control elements not found');
+      console.warn('Mobile control elements not found', {
+        leftBtn: !!this.leftBtn,
+        rightBtn: !!this.rightBtn,
+        shootBtn: !!this.shootBtn
+      });
       return;
     }
 
-    if (IS_MOBILE || window.innerWidth <= 768) {
-      this.initializeMobileControls();
-    }
+    // Always initialize for testing - we can force show on any device
+    this.initializeMobileControls();
   }
 
   private initializeMobileControls() {
-    // Show mobile controls
+    // Force show mobile controls for testing and mobile devices
     const mobileControls = document.getElementById('mobile-controls');
     if (mobileControls) {
       mobileControls.style.display = 'block';
+      console.log('Mobile controls initialized and shown');
+    } else {
+      console.error('mobile-controls element not found in DOM');
     }
 
     // Left movement button

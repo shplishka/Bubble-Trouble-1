@@ -11,21 +11,25 @@ export class Score {
   }
 
   draw(score: number = 0, index: number) {
-    this.ctx.fillStyle = "red";
-    this.ctx.font = "20px Arial";
+    const isMobile = window.innerWidth <= 768;
+    
+    this.ctx.fillStyle = "white";
+    this.ctx.strokeStyle = "black";
+    this.ctx.lineWidth = 2;
+    this.ctx.font = isMobile ? "16px Arial" : "20px Arial";
+    
+    // Position scores at the top for mobile, bottom for desktop
+    const yPosition = isMobile ? 25 : CANVAS_DIMENSIONS.CANVAS_HEIGHT - 10;
+    
     if (index == 0) {
-      this.ctx.fillText(
-        `Score: ${score}`,
-        WALL_WIDTH + 150,
-        CANVAS_DIMENSIONS.CANVAS_HEIGHT - 10
-      );
+      const xPosition = isMobile ? 20 : WALL_WIDTH + 150;
+      this.ctx.strokeText(`Score: ${score}`, xPosition, yPosition);
+      this.ctx.fillText(`Score: ${score}`, xPosition, yPosition);
     }
     if (index == 1) {
-      this.ctx.fillText(
-        `Score: ${score}`,
-        WALL_WIDTH + 650,
-        CANVAS_DIMENSIONS.CANVAS_HEIGHT - 10
-      );
+      const xPosition = isMobile ? CANVAS_DIMENSIONS.CANVAS_WIDTH - 120 : WALL_WIDTH + 650;
+      this.ctx.strokeText(`Score: ${score}`, xPosition, yPosition);
+      this.ctx.fillText(`Score: ${score}`, xPosition, yPosition);
     }
   }
 }

@@ -48,6 +48,7 @@ export class Player {
       CANVAS_DIMENSIONS.CANVAS_HEIGHT - this.playerHeight - GROUND_HEIGHT;
     this.dx = 3;
     this.movement = Movement.STATIONARY;
+    // Original sprite sheet dimensions (for animation calculations)
     this.spriteWidth = 47.25;
     this.spriteHeight = 56;
     this.frameX = 0;
@@ -58,11 +59,19 @@ export class Player {
     this.score = initialScore;
     this.powerUps = [];
     // Ensure player starts in a visible position
-    const safeMargin = Math.max(WALL_WIDTH, 10); // At least 10px margin
-    this.initialPosX =
-      playerIndex === 0
+    const isMobile = window.innerWidth <= 768;
+    const safeMargin = Math.max(WALL_WIDTH, isMobile ? 20 : 10); // Bigger margin on mobile
+    
+    // For mobile, position players more centrally and visibly
+    if (isMobile) {
+      this.initialPosX = playerIndex === 0 
+        ? Math.max(safeMargin, CANVAS_DIMENSIONS.CANVAS_WIDTH * 0.2)
+        : Math.min(CANVAS_DIMENSIONS.CANVAS_WIDTH - safeMargin - this.playerWidth, CANVAS_DIMENSIONS.CANVAS_WIDTH * 0.7);
+    } else {
+      this.initialPosX = playerIndex === 0
         ? safeMargin
         : Math.max(CANVAS_DIMENSIONS.CANVAS_WIDTH - safeMargin - this.playerWidth, safeMargin + this.playerWidth);
+    }
     
     this.posX = this.initialPosX;
     this.arrow = new Arrow(ctx, this.posX); //each player should have an instance of arrow to determine the score
@@ -75,11 +84,11 @@ export class Player {
         right: "ArrowRight",
         shoot: "Space",
       };
-      this.posX = safeMargin; // Ensure visible starting position
+      this.posX = this.initialPosX; // Use calculated position
     } else if (playerIndex === 1) {
       this.imgSource = playerTwoImgSrc;
       this.controls = { left: "KeyA", right: "KeyD", shoot: "KeyW" };
-      this.posX = Math.max(safeMargin + this.playerWidth, CANVAS_DIMENSIONS.CANVAS_WIDTH * 0.6);
+      this.posX = this.initialPosX; // Use calculated position
     }
   }
 

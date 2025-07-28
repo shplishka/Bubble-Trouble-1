@@ -27,6 +27,8 @@ export class GroundWalls {
   }
 
   draw() {
+    const isMobile = window.innerWidth <= 768;
+    
     this.ctx.beginPath();
     this.ctx.drawImage(
       this.groundImg,
@@ -36,26 +38,37 @@ export class GroundWalls {
       this.height
     );
     this.ctx.closePath();
-    this.drawTexts(
-      "Player 1",
-      WALL_WIDTH,
-      CANVAS_DIMENSIONS.CANVAS_HEIGHT - 10
-    );
-    this.drawTexts(
-      "Level",
-      (CANVAS_DIMENSIONS.CANVAS_WIDTH - WALL_WIDTH) / 2,
-      CANVAS_DIMENSIONS.CANVAS_HEIGHT - 50
-    );
-    this.drawTexts(
-      "Player 2",
-      CANVAS_DIMENSIONS.CANVAS_WIDTH - WALL_WIDTH - 100,
-      CANVAS_DIMENSIONS.CANVAS_HEIGHT - 10
-    );
-    this.drawTexts(
-      this.level.toString(),
-      (CANVAS_DIMENSIONS.CANVAS_WIDTH - WALL_WIDTH) / 2 + 25,
-      CANVAS_DIMENSIONS.CANVAS_HEIGHT - 10
-    );
+    
+    if (!isMobile) {
+      // Only show ground labels on desktop to reduce clutter on mobile
+      this.drawTexts(
+        "Player 1",
+        WALL_WIDTH,
+        CANVAS_DIMENSIONS.CANVAS_HEIGHT - 10
+      );
+      this.drawTexts(
+        "Level",
+        (CANVAS_DIMENSIONS.CANVAS_WIDTH - WALL_WIDTH) / 2,
+        CANVAS_DIMENSIONS.CANVAS_HEIGHT - 50
+      );
+      this.drawTexts(
+        "Player 2",
+        CANVAS_DIMENSIONS.CANVAS_WIDTH - WALL_WIDTH - 100,
+        CANVAS_DIMENSIONS.CANVAS_HEIGHT - 10
+      );
+      this.drawTexts(
+        this.level.toString(),
+        (CANVAS_DIMENSIONS.CANVAS_WIDTH - WALL_WIDTH) / 2 + 25,
+        CANVAS_DIMENSIONS.CANVAS_HEIGHT - 10
+      );
+    } else {
+      // Show level info at top center on mobile
+      this.drawMobileTexts(
+        `Level ${this.level}`,
+        CANVAS_DIMENSIONS.CANVAS_WIDTH / 2,
+        75
+      );
+    }
   }
 
   drawTexts(text: string, posX: number, posY: number) {
@@ -81,5 +94,18 @@ export class GroundWalls {
 
     this.ctx.fillStyle = "red";
     this.ctx.fillText(TEXT, posX, posY);
+  }
+
+  drawMobileTexts(text: string, posX: number, posY: number) {
+    this.ctx.font = "18px Luckiest Guy";
+    this.ctx.fillStyle = "white";
+    this.ctx.strokeStyle = "black";
+    this.ctx.lineWidth = 2;
+    this.ctx.textAlign = "center";
+    
+    this.ctx.strokeText(text, posX, posY);
+    this.ctx.fillText(text, posX, posY);
+    
+    this.ctx.textAlign = "start"; // Reset alignment
   }
 }

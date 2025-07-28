@@ -40,17 +40,20 @@ body {
   transform: translateX(-50%);
   z-index: 1000;
   display: none; /* Hidden by default, shown on mobile */
+  width: 100%;
+  max-width: 400px;
 }
 
 .control-row {
   display: flex;
-  gap: 15px;
+  gap: 20px;
   align-items: center;
-  justify-content: center;
-  padding: 10px;
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 15px;
+  justify-content: space-between;
+  padding: 15px 20px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 20px;
   backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .control-btn {
@@ -102,19 +105,22 @@ body {
   }
   
   .game-container {
-    padding: 10px;
+    padding: 5px;
+    padding-top: 10px; /* Space for top UI elements */
   }
   
   #canvas {
     max-width: 95vw; /* Leave some margin */
-    max-height: 70vh; /* Balance between canvas size and UI space */
+    max-height: 65vh; /* Reduced to make room for top UI */
     width: auto;
     height: auto;
     margin: 5px;
+    margin-top: 10px; /* Space for score/lives at top */
   }
   
   .mobile-controls {
-    display: block;
+    display: block !important;
+    bottom: 10px;
   }
   
   /* Ensure start screen buttons are visible and responsive on mobile */
@@ -122,11 +128,6 @@ body {
     z-index: 1001 !important;
     position: fixed !important;
     box-sizing: border-box !important;
-  }
-  
-  /* Prevent text from being too small on mobile */
-  .mobile-controls {
-    bottom: 15px;
   }
 }
 

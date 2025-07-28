@@ -167,27 +167,32 @@ export class GameManager {
       });
     });
 
-    // Set up mobile controls
-    if (IS_MOBILE || window.innerWidth <= 768) {
-      this.mobileControls = new MobileControls({
-        onMoveStart: (direction: Movement) => {
-          // For mobile, we typically control the first player
-          if (this.players.length > 0) {
-            this.handleMoveStart(direction, this.players[0]);
-          }
-        },
-        onMoveEnd: () => {
-          if (this.players.length > 0) {
-            this.handleMoveEnd(this.players[0]);
-          }
-        },
-        onShoot: () => {
-          if (this.players.length > 0) {
-            this.handleShoot(this.players[0]);
-          }
+    // Set up mobile controls - always initialize for testing
+    console.log('Initializing mobile controls...');
+    console.log('IS_MOBILE:', IS_MOBILE);
+    console.log('window.innerWidth:', window.innerWidth);
+    
+    this.mobileControls = new MobileControls({
+      onMoveStart: (direction: Movement) => {
+        console.log('Mobile move start:', direction);
+        // For mobile, we typically control the first player
+        if (this.players.length > 0) {
+          this.handleMoveStart(direction, this.players[0]);
         }
-      });
-    }
+      },
+      onMoveEnd: () => {
+        console.log('Mobile move end');
+        if (this.players.length > 0) {
+          this.handleMoveEnd(this.players[0]);
+        }
+      },
+      onShoot: () => {
+        console.log('Mobile shoot');
+        if (this.players.length > 0) {
+          this.handleShoot(this.players[0]);
+        }
+      }
+    });
   }
 
   private handleMoveStart(direction: Movement, player: Player) {
@@ -292,9 +297,19 @@ export class GameManager {
     const seconds = Math.floor((this.timeRemaining % 60000) / 1000);
     const timeString = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 
-    this.ctx.font = "24px Arial";
+    const isMobile = window.innerWidth <= 768;
+    
+    this.ctx.font = isMobile ? "18px Arial" : "24px Arial";
     this.ctx.fillStyle = "white";
-    this.ctx.fillText(timeString, this.canvas.width - 100, 50);
+    this.ctx.strokeStyle = "black";
+    this.ctx.lineWidth = 2;
+    
+    // Position timer at top right on mobile, top right on desktop
+    const xPosition = isMobile ? this.canvas.width - 80 : this.canvas.width - 100;
+    const yPosition = isMobile ? 25 : 50;
+    
+    this.ctx.strokeText(timeString, xPosition, yPosition);
+    this.ctx.fillText(timeString, xPosition, yPosition);
   }
   resetTimer() {
     this.adjustedTime = 0;
