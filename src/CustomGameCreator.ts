@@ -2,7 +2,6 @@ import { GroundWalls } from "./components/Ground";
 import { Bubble } from "./components/Bubble";
 import { Wall } from "./components/Wall";
 import { GameManager } from "./GameManager";
-import { Lives } from "./Lives";
 import { CANVAS_DIMENSIONS, GROUND_HEIGHT } from "./constants";
 import { LEVEL_FIVE, LEVEL_ONE } from "./utils/levels";
 import groundImg from "/wall.jpg";
@@ -31,7 +30,6 @@ export class CustomGamesCreator {
   currentWall?: Wall;
   addWallButton?: HTMLButtonElement;
   selectedWallIndex: number = -1;
-  life: Lives;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -42,7 +40,6 @@ export class CustomGamesCreator {
     this.groundImg = new Image();
     this.groundImg.src = groundImg;
     this.wall = new Wall(this.ctx, 0);
-    this.life = new Lives(this.ctx);
 
     GameManager.bubbleArray = [];
 
