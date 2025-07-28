@@ -106,20 +106,27 @@ body {
   }
   
   #canvas {
-    max-width: 100vw;
-    max-height: 75vh; /* Increased from 70vh to 75vh for better visibility */
+    max-width: 95vw; /* Leave some margin */
+    max-height: 70vh; /* Balance between canvas size and UI space */
     width: auto;
     height: auto;
+    margin: 5px;
   }
   
   .mobile-controls {
     display: block;
   }
   
-  /* Ensure start screen buttons are visible on mobile */
+  /* Ensure start screen buttons are visible and responsive on mobile */
   button {
     z-index: 1001 !important;
     position: fixed !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Prevent text from being too small on mobile */
+  .mobile-controls {
+    bottom: 15px;
   }
 }
 

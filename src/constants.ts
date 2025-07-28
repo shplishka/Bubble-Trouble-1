@@ -11,10 +11,13 @@ const getCanvasDimensions = () => {
   const availableHeight = window.innerHeight;
   
   if (mobile) {
-    // Mobile: use most of the screen, leaving space for controls
+    // Mobile: responsive sizing that scales with screen
+    const padding = 20;
+    const controlsSpace = 120; // Space reserved for mobile controls
+    
     return {
-      CANVAS_WIDTH: Math.min(availableWidth - 20, 500), // Increased from 400 to 500
-      CANVAS_HEIGHT: Math.min(availableHeight - 180, 700), // Increased from 600 to 700, more space for controls
+      CANVAS_WIDTH: Math.min(availableWidth - padding, Math.max(350, availableWidth * 0.95)),
+      CANVAS_HEIGHT: Math.min(availableHeight - controlsSpace, Math.max(400, (availableHeight - controlsSpace) * 0.9)),
     };
   } else {
     // Desktop: use the original logic
