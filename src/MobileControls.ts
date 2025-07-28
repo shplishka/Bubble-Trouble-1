@@ -147,7 +147,7 @@ export class MobileControls {
     });
   }
 
-  private handleMoveEnd(direction: string) {
+  private handleMoveEnd(_direction: string) {
     // Only stop movement if no movement buttons are active
     if (!this.activeTouch['left'] && !this.activeTouch['right']) {
       this.callbacks.onMoveEnd();
