@@ -7,7 +7,8 @@ import { Score } from "./components/Score";
 import { PowerUp } from "./components/Power-ups";
 import { Lives } from "./Lives";
 import { LevelLoader } from "./LevelLoader";
-import { CANVAS_DIMENSIONS, WALL_WIDTH } from "./constants";
+import { MobileControls } from "./MobileControls";
+import { CANVAS_DIMENSIONS, WALL_WIDTH, IS_MOBILE } from "./constants";
 import { Movement } from "./utils/enum";
 import { GameState } from "./utils/enum";
 import { getRandomInt } from "./utils/utils";
@@ -65,6 +66,7 @@ export class GameManager {
   players: Player[] = [];
   static walls: Wall[] = [];
   gameOverImg: HTMLImageElement;
+  mobileControls?: MobileControls;
 
   constructor(
     canvas: HTMLCanvasElement,
@@ -125,26 +127,26 @@ export class GameManager {
       player.tempMovement = Movement.STATIONARY;
     })
 
+    this.initializeControls();
+
+  }
+
+  initializeControls() {
     const keyState: { [key: string]: boolean } = {};
 
+    // Set up keyboard controls (for desktop)
     document.addEventListener("keydown", (event) => {
       keyState[event.code] = true;
 
       this.players.forEach((player) => {
         if (keyState[player.controls!.left]) {
-          player.movement = Movement.LEFT;
-          player.tempMovement = Movement.LEFT;
+          this.handleMoveStart(Movement.LEFT, player);
         }
         if (keyState[player.controls!.right]) {
-          player.movement = Movement.RIGHT;
-          player.tempMovement = Movement.RIGHT;
+          this.handleMoveStart(Movement.RIGHT, player);
         }
         if (keyState[player.controls!.shoot]) {
-          const arrowSound = new Audio(arrowAudioSrc);
-          arrowSound.play();
-          this.arrow = new Arrow(this.ctx, player.posX + player.width/2)
-          this.arrow!.isHittable = true;
-          player.movement = Movement.STATIONARY;
+          this.handleShoot(player);
         }
       });
     });
@@ -157,15 +159,53 @@ export class GameManager {
           event.code === player.controls!.left ||
           event.code === player.controls!.right
         ) {
-          player.movement = Movement.STATIONARY;
-          player.tempMovement = Movement.STATIONARY;
+          this.handleMoveEnd(player);
         }
         if (event.code === player.controls!.shoot) {
           player.movement = player.tempMovement;
         }
       });
-});
+    });
 
+    // Set up mobile controls
+    if (IS_MOBILE || window.innerWidth <= 768) {
+      this.mobileControls = new MobileControls({
+        onMoveStart: (direction: Movement) => {
+          // For mobile, we typically control the first player
+          if (this.players.length > 0) {
+            this.handleMoveStart(direction, this.players[0]);
+          }
+        },
+        onMoveEnd: () => {
+          if (this.players.length > 0) {
+            this.handleMoveEnd(this.players[0]);
+          }
+        },
+        onShoot: () => {
+          if (this.players.length > 0) {
+            this.handleShoot(this.players[0]);
+          }
+        }
+      });
+    }
+  }
+
+  private handleMoveStart(direction: Movement, player: Player) {
+    player.movement = direction;
+    player.tempMovement = direction;
+  }
+
+  private handleMoveEnd(player: Player) {
+    player.movement = Movement.STATIONARY;
+    player.tempMovement = Movement.STATIONARY;
+  }
+
+  private handleShoot(player: Player) {
+    const arrowSound = new Audio(arrowAudioSrc);
+    arrowSound.play();
+    this.arrow = new Arrow(this.ctx, player.posX + player.width/2)
+    this.arrow!.isHittable = true;
+    player.movement = Movement.STATIONARY;
   }
 
   initialSetup() {
@@ -338,11 +378,33 @@ export class GameManager {
 
   endGameStateRender() {
     this.gameState = GameState.END;
+    
+    // Draw game over background
     this.ctx.drawImage(
       this.gameOverImg,
       CANVAS_DIMENSIONS.CANVAS_WIDTH / 2 - 100,
       CANVAS_DIMENSIONS.CANVAS_HEIGHT / 2 - 200
     );
+    
+    // Add Hebrew game over text "התחרבנת"
+    this.ctx.font = "bold 48px 'Bubblegum Sans', Arial, sans-serif";
+    this.ctx.fillStyle = "red";
+    this.ctx.strokeStyle = "white";
+    this.ctx.lineWidth = 3;
+    this.ctx.textAlign = "center";
+    
+    const hebrewText = "התחרבנת";
+    const textX = CANVAS_DIMENSIONS.CANVAS_WIDTH / 2;
+    const textY = CANVAS_DIMENSIONS.CANVAS_HEIGHT / 2 - 50;
+    
+    // Draw text outline
+    this.ctx.strokeText(hebrewText, textX, textY);
+    // Draw text fill
+    this.ctx.fillText(hebrewText, textX, textY);
+    
+    // Reset text alignment
+    this.ctx.textAlign = "start";
+    
     setTimeout(() => {
       location.reload();
     }, 3000);

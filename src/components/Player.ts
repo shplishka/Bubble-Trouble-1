@@ -5,7 +5,7 @@ import { Movement } from "../utils/enum";
 import { Sprite } from "../Sprite";
 import { Arrow } from "./Arrow";
 import { GameManager } from "../GameManager";
-import playerOneImgSrc from "/hero.png";
+import benpoImgSrc from "/benpo.png";
 import playerTwoImgSrc from "/hero-2.png";
 
 /* The Player class represents a player in a game with properties such as position, movement, sprite,
@@ -66,7 +66,7 @@ export class Player {
     
     // Set controls based on player index
     if (playerIndex === 0) {
-      this.imgSource = playerOneImgSrc;
+      this.imgSource = benpoImgSrc;
       this.controls = {
         left: "ArrowLeft",
         right: "ArrowRight",

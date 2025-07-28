@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bubble Trouble</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>Benpo Trouble</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Rubik+Bubbles&display=swap" rel="stylesheet">
@@ -13,18 +13,24 @@
     <link rel="stylesheet" href="src/style/style.css">
   </head>
   <body>
-    <canvas id="canvas"></canvas>
-    <!-- <div class="canvas-container"> -->
-      <!-- <div class="start-screen">
-        <button id="create-game">Create Game</button>
-        <button id = "one-player">One Player</button>
-        <button id="two-players">Two Players</button>
-        <button id = "settings">Settings</button>
+    <div class="game-container">
+      <canvas id="canvas"></canvas>
+      
+      <!-- Mobile Controls -->
+      <div class="mobile-controls" id="mobile-controls">
+        <div class="control-row">
+          <button class="control-btn move-btn" id="move-left" data-action="left">
+            ⬅️
+          </button>
+          <button class="control-btn shoot-btn" id="shoot-btn" data-action="shoot">
+            🔫
+          </button>
+          <button class="control-btn move-btn" id="move-right" data-action="right">
+            ➡️
+          </button>
+        </div>
       </div>
-      <div class="level-screen">
-        <button id="first-level">1</button>
-      </div> -->
-    <!-- </div> -->
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

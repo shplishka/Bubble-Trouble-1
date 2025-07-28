@@ -64,8 +64,8 @@ export class StartScreen {
     this.ctx.strokeStyle = "red";
     this.ctx.lineWidth = 3;
     this.ctx.textAlign = "center";
-    this.ctx.fillText("Bubble Trouble", this.canvas.width / 2, 150);
-    this.ctx.strokeText("Bubble Trouble", this.canvas.width / 2, 150);
+    this.ctx.fillText("Benpo Trouble", this.canvas.width / 2, 150);
+    this.ctx.strokeText("Benpo Trouble", this.canvas.width / 2, 150);
   }
   createButton(text: string, x: number, y: number): HTMLButtonElement {
     const button = document.createElement("button");
