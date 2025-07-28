@@ -3,11 +3,10 @@ import { Bubble } from "./components/Bubble";
 import { GroundWalls } from "./components/Ground";
 import { Arrow } from "./components/Arrow";
 import { Wall } from "./components/Wall";
-import { Score } from "./components/Score";
 import { PowerUp } from "./components/Power-ups";
-import { Lives } from "./Lives";
 import { LevelLoader } from "./LevelLoader";
 import { MobileControls } from "./MobileControls";
+import { UIManager } from "./UIManager";
 import { CANVAS_DIMENSIONS, WALL_WIDTH, IS_MOBILE } from "./constants";
 import { Movement } from "./utils/enum";
 import { GameState } from "./utils/enum";
@@ -57,16 +56,16 @@ export class GameManager {
   powerUp?: PowerUp | null;
   powerUpOption?: number;
   isCollisionPlayerPowerUp: boolean = false;
-  score?: Score;
   powerUpArray: PowerUp[] = [];
   static wallSlidingSound: HTMLAudioElement;
   static punchAudio: HTMLAudioElement;
-  life?: Lives;
   isPlayerHit: boolean = false;
   players: Player[] = [];
   static walls: Wall[] = [];
   gameOverImg: HTMLImageElement;
   mobileControls?: MobileControls;
+  uiManager: UIManager;
+  numberOfPlayers: number;
 
   constructor(
     canvas: HTMLCanvasElement,
@@ -75,8 +74,11 @@ export class GameManager {
   ) {
     this.canvas = canvas;
     this.ctx = this.canvas.getContext("2d")!;
-    this.canvas.width = CANVAS_DIMENSIONS.CANVAS_WIDTH;
-    this.canvas.height = CANVAS_DIMENSIONS.CANVAS_HEIGHT;
+    this.numberOfPlayers = numberOfPlayers;
+    
+    // Initialize UI Manager
+    this.uiManager = UIManager.getInstance();
+    this.uiManager.initialize(numberOfPlayers, 3, 1);
 
     this.levelLoader = new LevelLoader(this);
 
@@ -221,9 +223,7 @@ export class GameManager {
       (CANVAS_DIMENSIONS.CANVAS_WIDTH - WALL_WIDTH) / 2
     );
 
-    this.score = new Score(this.ctx);
-    this.life = new Lives(this.ctx);
-
+    // UI is now handled by UIManager, no need for separate Score/Lives classes
   }
 
   draw() {
@@ -287,29 +287,15 @@ export class GameManager {
       this.levelLoader.loadNextLevel();
     }
 
+    // Update UI for all players
     this.players.forEach((player, index) => {
-      this.score?.draw(player.score, index);
-      this.life?.draw(player.life, index);
+      this.uiManager.updateScore(index, player.score);
+      this.uiManager.updateLives(index, player.life);
     });
   }
   drawTimer() {
-    const minutes = Math.floor(this.timeRemaining / 60000);
-    const seconds = Math.floor((this.timeRemaining % 60000) / 1000);
-    const timeString = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-
-    const isMobile = window.innerWidth <= 768;
-    
-    this.ctx.font = isMobile ? "18px Arial" : "24px Arial";
-    this.ctx.fillStyle = "white";
-    this.ctx.strokeStyle = "black";
-    this.ctx.lineWidth = 2;
-    
-    // Position timer at top right on mobile, top right on desktop
-    const xPosition = isMobile ? this.canvas.width - 80 : this.canvas.width - 100;
-    const yPosition = isMobile ? 25 : 50;
-    
-    this.ctx.strokeText(timeString, xPosition, yPosition);
-    this.ctx.fillText(timeString, xPosition, yPosition);
+    // Timer is now handled by UIManager in the top bar
+    this.uiManager.updateTimer(this.timeRemaining);
   }
   resetTimer() {
     this.adjustedTime = 0;

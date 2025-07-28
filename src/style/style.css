@@ -1,180 +1,395 @@
+/* Mobile-First CSS Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Mobile-First Body */
 body {
-  background-color: darkgrey;
+  font-family: 'Bubblegum Sans', cursive;
+  background: linear-gradient(135deg, #2c3e50, #3498db);
+  min-height: 100vh;
+  overflow: hidden;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Main Mobile Game Wrapper */
+.mobile-game-wrapper {
+  display: flex;
+  flex-direction: column;
   height: 100vh;
+  width: 100vw;
+  max-width: 100%;
+  position: relative;
+}
+
+/* Top UI Bar - Fixed Height */
+.top-ui-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 8px 15px;
+  min-height: 60px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+.player-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 80px;
+}
+
+.player-info.left {
+  align-items: flex-start;
+}
+
+.player-info.right {
+  align-items: flex-end;
+}
+
+.center-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.lives-display, .score-display, .level-display, .timer-display {
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+}
+
+.level-display {
+  font-size: 16px;
+  color: #f39c12;
+}
+
+.timer-display {
+  font-size: 15px;
+  color: #e74c3c;
+}
+
+/* Game Canvas Container - Flexible */
+.game-canvas-container {
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Bubblegum Sans', cursive;
-  overflow: hidden; /* Prevent scrolling on mobile */
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
-.game-container {
+#canvas {
+  max-width: 100%;
+  max-height: 100%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(45deg, #87CEEB, #ADD8E6);
+}
+
+/* Control Panel - Fixed Height */
+.control-panel {
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(15px);
+  padding: 15px;
+  border-top: 2px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100px;
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+.movement-controls {
+  display: flex;
+  gap: 15px;
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.action-controls {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+/* Control Buttons */
+.control-btn {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  width: 100vw;
-  position: relative;
-}
-
-#canvas {
-  background-color: aqua;
-  border: 2px solid #333;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  display: block;
-}
-
-/* Mobile Controls */
-.mobile-controls {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  display: none; /* Hidden by default, shown on mobile */
-  width: 100%;
-  max-width: 400px;
-}
-
-.control-row {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px 20px;
-  background: rgba(0, 0, 0, 0.8);
-  border-radius: 20px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-.control-btn {
-  width: 60px;
-  height: 60px;
+  gap: 4px;
+  min-width: 70px;
+  min-height: 70px;
   border: none;
-  border-radius: 50%;
-  font-size: 24px;
+  border-radius: 15px;
+  font-family: 'Bubblegum Sans', cursive;
+  font-weight: bold;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  user-select: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   touch-action: manipulation;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .move-btn {
-  background: linear-gradient(145deg, #4CAF50, #45a049);
+  background: linear-gradient(145deg, #27ae60, #2ecc71);
   color: white;
-}
-
-.move-btn:hover, .move-btn.active {
-  background: linear-gradient(145deg, #45a049, #4CAF50);
-  transform: scale(1.1);
 }
 
 .shoot-btn {
-  background: linear-gradient(145deg, #f44336, #da190b);
+  background: linear-gradient(145deg, #e74c3c, #c0392b);
   color: white;
-  width: 70px;
-  height: 70px;
+  min-width: 80px;
+  min-height: 80px;
 }
 
-.shoot-btn:hover, .shoot-btn.active {
-  background: linear-gradient(145deg, #da190b, #f44336);
-  transform: scale(1.1);
+.btn-icon {
+  font-size: 24px;
+  line-height: 1;
 }
 
-.control-btn:active {
+.btn-label {
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Button States */
+.control-btn:active,
+.control-btn.active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.move-btn:active,
+.move-btn.active {
+  background: linear-gradient(145deg, #229954, #27ae60);
+}
+
+.shoot-btn:active,
+.shoot-btn.active {
+  background: linear-gradient(145deg, #cb4335, #e74c3c);
+}
+
+/* Start Screen & Level Selector Buttons */
+button:not(.control-btn) {
+  position: fixed !important;
+  z-index: 1001 !important;
+  font-family: 'Bubblegum Sans', cursive;
+  font-weight: bold;
+  border: 2px solid #8B4513;
+  background: linear-gradient(145deg, #e74c3c, #c0392b);
+  color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  touch-action: manipulation;
+  padding: 12px 20px;
+  font-size: 16px;
+  min-width: 200px;
+  min-height: 50px;
+}
+
+button:not(.control-btn):hover {
+  background: linear-gradient(145deg, #c0392b, #e74c3c);
+  transform: scale(1.05);
+}
+
+button:not(.control-btn):active {
   transform: scale(0.95);
 }
 
-/* Show mobile controls on small screens or touch devices */
-@media (max-width: 768px), (hover: none) and (pointer: coarse) {
-  body {
-    background-color: #2c3e50;
+/* Responsive Adjustments */
+@media (max-width: 480px) {
+  .top-ui-bar {
+    padding: 6px 10px;
+    min-height: 50px;
   }
   
-  .game-container {
-    padding: 5px;
-    padding-top: 10px; /* Space for top UI elements */
+  .lives-display, .score-display {
+    font-size: 12px;
   }
   
-  #canvas {
-    max-width: 95vw; /* Leave some margin */
-    max-height: 65vh; /* Reduced to make room for top UI */
-    width: auto;
-    height: auto;
-    margin: 5px;
-    margin-top: 10px; /* Space for score/lives at top */
+  .level-display {
+    font-size: 14px;
   }
   
-  .mobile-controls {
-    display: block !important;
-    bottom: 10px;
+  .timer-display {
+    font-size: 13px;
   }
   
-  /* Ensure start screen buttons are visible and responsive on mobile */
-  button {
-    z-index: 1001 !important;
-    position: fixed !important;
-    box-sizing: border-box !important;
+  .control-panel {
+    padding: 10px;
+    min-height: 90px;
+  }
+  
+  .control-btn {
+    min-width: 60px;
+    min-height: 60px;
+  }
+  
+  .shoot-btn {
+    min-width: 70px;
+    min-height: 70px;
+  }
+  
+  .movement-controls {
+    gap: 10px;
+  }
+  
+  .btn-icon {
+    font-size: 20px;
+  }
+  
+  .btn-label {
+    font-size: 10px;
   }
 }
 
 @media (max-height: 600px) {
-  .mobile-controls {
-    bottom: 10px;
+  .top-ui-bar {
+    min-height: 45px;
+    padding: 4px 10px;
+  }
+  
+  .control-panel {
+    min-height: 80px;
+    padding: 8px;
   }
   
   .control-btn {
-    width: 50px;
-    height: 50px;
-    font-size: 20px;
+    min-width: 55px;
+    min-height: 55px;
   }
   
   .shoot-btn {
-    width: 60px;
-    height: 60px;
-  }
-  
-  #canvas {
-    max-height: 65vh; /* Reduce canvas height on very short screens */
+    min-width: 65px;
+    min-height: 65px;
   }
 }
 
-/* Touch feedback */
-@media (hover: none) and (pointer: coarse) {
-  .control-btn:hover {
-    transform: none;
-  }
-}
-
-/* Landscape orientation adjustments */
+/* Landscape Orientation */
 @media (orientation: landscape) and (max-height: 500px) {
-  .game-container {
+  .mobile-game-wrapper {
     flex-direction: row;
-    gap: 20px;
   }
   
-  .mobile-controls {
-    position: fixed;
-    right: 20px;
-    bottom: 50%;
-    transform: translateY(50%);
-    left: auto;
+  .top-ui-bar {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    width: 150px;
+    min-height: 100vh;
+    border-bottom: none;
+    border-right: 2px solid rgba(255, 255, 255, 0.1);
   }
   
-  .control-row {
+  .control-panel {
+    writing-mode: vertical-rl;
+    width: 120px;
+    min-height: 100vh;
+    border-top: none;
+    border-left: 2px solid rgba(255, 255, 255, 0.1);
     flex-direction: column;
+  }
+  
+  .game-canvas-container {
+    flex: 1;
+  }
+}
+
+/* Desktop Overrides */
+@media (min-width: 769px) {
+  body {
+    background-color: darkgrey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .mobile-game-wrapper {
+    max-width: 500px;
+    max-height: 90vh;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+  
+  .top-ui-bar {
+    min-height: 70px;
+    padding: 10px 20px;
+  }
+  
+  .lives-display, .score-display {
+    font-size: 16px;
+  }
+  
+  .level-display {
+    font-size: 18px;
+  }
+  
+  .timer-display {
+    font-size: 17px;
+  }
+  
+  .control-panel {
+    min-height: 120px;
+    padding: 20px;
+  }
+  
+  .control-btn {
+    min-width: 80px;
+    min-height: 80px;
+  }
+  
+  .shoot-btn {
+    min-width: 90px;
+    min-height: 90px;
+  }
+  
+  .btn-icon {
+    font-size: 28px;
+  }
+  
+  .btn-label {
+    font-size: 14px;
+  }
+}
+
+/* Hide mobile controls on desktop when not needed */
+@media (min-width: 769px) and (hover: hover) {
+  .control-panel {
+    display: none;
+  }
+  
+  .game-canvas-container {
+    padding-bottom: 0;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .control-btn {
+    transition: none;
   }
 }

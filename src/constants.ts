@@ -4,32 +4,17 @@ const isMobile = () => {
     || window.innerWidth <= 768;
 };
 
-// Calculate responsive dimensions
-const getCanvasDimensions = () => {
-  const mobile = isMobile();
-  const availableWidth = window.innerWidth;
-  const availableHeight = window.innerHeight;
-  
-  if (mobile) {
-    // Mobile: responsive sizing that scales with screen
-    const padding = 20;
-    const controlsSpace = 140; // Space reserved for mobile controls
-    const topUISpace = 100; // Space for score/lives at top
-    
-    return {
-      CANVAS_WIDTH: Math.min(availableWidth - padding, Math.max(350, availableWidth * 0.95)),
-      CANVAS_HEIGHT: Math.min(availableHeight - controlsSpace - topUISpace, Math.max(350, (availableHeight - controlsSpace - topUISpace) * 0.8)),
-    };
-  } else {
-    // Desktop: use the original logic
-    return {
-      CANVAS_WIDTH: window.innerWidth - 300,
-      CANVAS_HEIGHT: window.innerHeight - 10,
-    };
-  }
+// Mobile-first canvas dimensions - will be set dynamically by UIManager
+export let CANVAS_DIMENSIONS = {
+  CANVAS_WIDTH: 400,
+  CANVAS_HEIGHT: 300
 };
 
-export const CANVAS_DIMENSIONS = getCanvasDimensions();
+// Function to update canvas dimensions (called by UIManager)
+export const updateCanvasDimensions = (width: number, height: number) => {
+  CANVAS_DIMENSIONS.CANVAS_WIDTH = width;
+  CANVAS_DIMENSIONS.CANVAS_HEIGHT = height;
+};
 
 // Scale player size based on device
 const getPlayerDimensions = () => {

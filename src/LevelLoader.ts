@@ -30,6 +30,11 @@ export class LevelLoader {
     const level = this.levels[levelIndex];
     this.applyLevelConfig(level);
     this.currentLevelIndex = levelIndex;
+    
+    // Update UI with current level
+    if (this.gameManager.uiManager) {
+      this.gameManager.uiManager.updateLevel(this.level);
+    }
   }
 
   loadNextLevel() {
@@ -38,6 +43,11 @@ export class LevelLoader {
       this.level += 1;
       this.loadLevel(nextLevelIndex);
       this.gameManager.resetTimer();
+      
+      // Update UI with new level
+      if (this.gameManager.uiManager) {
+        this.gameManager.uiManager.updateLevel(this.level);
+      }
     } else {
       return;
     }

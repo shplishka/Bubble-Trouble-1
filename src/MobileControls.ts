@@ -32,19 +32,13 @@ export class MobileControls {
       return;
     }
 
-    // Always initialize for testing - we can force show on any device
+    // Initialize mobile controls - they're always visible in the new layout
     this.initializeMobileControls();
   }
 
   private initializeMobileControls() {
-    // Force show mobile controls for testing and mobile devices
-    const mobileControls = document.getElementById('mobile-controls');
-    if (mobileControls) {
-      mobileControls.style.display = 'block';
-      console.log('Mobile controls initialized and shown');
-    } else {
-      console.error('mobile-controls element not found in DOM');
-    }
+    // Controls are now always visible in the new mobile-first layout
+    console.log('Mobile controls initialized with new mobile-first design');
 
     // Left movement button
     this.addTouchEvents(this.leftBtn, 'left', () => {

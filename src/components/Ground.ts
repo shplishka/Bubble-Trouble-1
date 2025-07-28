@@ -27,8 +27,6 @@ export class GroundWalls {
   }
 
   draw() {
-    const isMobile = window.innerWidth <= 768;
-    
     this.ctx.beginPath();
     this.ctx.drawImage(
       this.groundImg,
@@ -39,36 +37,7 @@ export class GroundWalls {
     );
     this.ctx.closePath();
     
-    if (!isMobile) {
-      // Only show ground labels on desktop to reduce clutter on mobile
-      this.drawTexts(
-        "Player 1",
-        WALL_WIDTH,
-        CANVAS_DIMENSIONS.CANVAS_HEIGHT - 10
-      );
-      this.drawTexts(
-        "Level",
-        (CANVAS_DIMENSIONS.CANVAS_WIDTH - WALL_WIDTH) / 2,
-        CANVAS_DIMENSIONS.CANVAS_HEIGHT - 50
-      );
-      this.drawTexts(
-        "Player 2",
-        CANVAS_DIMENSIONS.CANVAS_WIDTH - WALL_WIDTH - 100,
-        CANVAS_DIMENSIONS.CANVAS_HEIGHT - 10
-      );
-      this.drawTexts(
-        this.level.toString(),
-        (CANVAS_DIMENSIONS.CANVAS_WIDTH - WALL_WIDTH) / 2 + 25,
-        CANVAS_DIMENSIONS.CANVAS_HEIGHT - 10
-      );
-    } else {
-      // Show level info at top center on mobile
-      this.drawMobileTexts(
-        `Level ${this.level}`,
-        CANVAS_DIMENSIONS.CANVAS_WIDTH / 2,
-        75
-      );
-    }
+    // Ground labels are no longer drawn here - UI is handled by UIManager in the top bar
   }
 
   drawTexts(text: string, posX: number, posY: number) {
