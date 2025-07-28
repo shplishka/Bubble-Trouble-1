@@ -58,7 +58,18 @@ export const MAX_BUBBLE_RADIUS = 60;
 export const MIN_BUBBLE_RADIUS = 10;
 export const DEFAULT_BUBBLE_MAX_POSX = 150;
 export const GRAVITY = 0.1;
-export const WALL_WIDTH = 80;
+
+// Make wall width responsive
+const getWallWidth = () => {
+  const mobile = isMobile();
+  if (mobile) {
+    return Math.min(40, window.innerWidth * 0.08); // Smaller walls on mobile
+  } else {
+    return 80; // Original desktop width
+  }
+};
+
+export const WALL_WIDTH = getWallWidth();
 
 export const POWER_UPS = {
   WIDTH : 30,

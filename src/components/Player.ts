@@ -57,10 +57,13 @@ export class Player {
     this.life = initialLife;
     this.score = initialScore;
     this.powerUps = [];
+    // Ensure player starts in a visible position
+    const safeMargin = Math.max(WALL_WIDTH, 10); // At least 10px margin
     this.initialPosX =
       playerIndex === 0
-        ? WALL_WIDTH
-        : CANVAS_DIMENSIONS.CANVAS_WIDTH - WALL_WIDTH - this.playerWidth;
+        ? safeMargin
+        : Math.max(CANVAS_DIMENSIONS.CANVAS_WIDTH - safeMargin - this.playerWidth, safeMargin + this.playerWidth);
+    
     this.posX = this.initialPosX;
     this.arrow = new Arrow(ctx, this.posX); //each player should have an instance of arrow to determine the score
     
@@ -72,11 +75,11 @@ export class Player {
         right: "ArrowRight",
         shoot: "Space",
       };
-      this.posX = WALL_WIDTH;
+      this.posX = safeMargin; // Ensure visible starting position
     } else if (playerIndex === 1) {
       this.imgSource = playerTwoImgSrc;
       this.controls = { left: "KeyA", right: "KeyD", shoot: "KeyW" };
-      this.posX = WALL_WIDTH + this.playerWidth;
+      this.posX = Math.max(safeMargin + this.playerWidth, CANVAS_DIMENSIONS.CANVAS_WIDTH * 0.6);
     }
   }
 
@@ -98,6 +101,11 @@ export class Player {
 
   draw() {
     this.ctx.beginPath();
+    
+    // Use responsive player dimensions for sprite rendering
+    const spriteDisplayWidth = this.playerWidth;
+    const spriteDisplayHeight = this.playerHeight;
+    
     if (this.movement === Movement.STATIONARY) {
       this.sprite = new Sprite(
         this.ctx,
@@ -105,7 +113,9 @@ export class Player {
         8,
         112,
         this.posX,
-        this.posY
+        this.posY,
+        spriteDisplayWidth,
+        spriteDisplayHeight
       );
     }
 
@@ -116,7 +126,9 @@ export class Player {
         this.frameX * this.spriteWidth,
         57,
         this.posX,
-        this.posY
+        this.posY,
+        spriteDisplayWidth,
+        spriteDisplayHeight
       );
       if (this.gameFrame % this.staggerFrame == 0) {
         if (this.frameX < 3) this.frameX++;
@@ -131,7 +143,9 @@ export class Player {
         this.frameX * this.spriteWidth,
         0,
         this.posX,
-        this.posY
+        this.posY,
+        spriteDisplayWidth,
+        spriteDisplayHeight
       );
       if (this.gameFrame % this.staggerFrame == 0) {
         if (this.frameX < 3) this.frameX++;
@@ -144,7 +158,11 @@ export class Player {
   }
 
   update() {
-    if (this.movement === Movement.LEFT && this.posX >= WALL_WIDTH) {
+    const safeMargin = Math.max(WALL_WIDTH, 10);
+    const leftBoundary = safeMargin;
+    const rightBoundary = CANVAS_DIMENSIONS.CANVAS_WIDTH - safeMargin - this.playerWidth;
+    
+    if (this.movement === Movement.LEFT && this.posX >= leftBoundary) {
       this.posX -= this.dx;
     }
 
@@ -157,11 +175,14 @@ export class Player {
 
     if (
       this.movement === Movement.RIGHT &&
-      this.posX + this.spriteWidth <=
-        CANVAS_DIMENSIONS.CANVAS_WIDTH - WALL_WIDTH
+      this.posX <= rightBoundary
     ) {
       this.posX += this.dx;
     }
+    
+    // Ensure player stays within bounds
+    this.posX = Math.max(leftBoundary, Math.min(this.posX, rightBoundary));
+    
     if (this.arrow) {
       this.arrow.update();
     }
