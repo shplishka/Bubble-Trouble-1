@@ -107,13 +107,19 @@ body {
   
   #canvas {
     max-width: 100vw;
-    max-height: 70vh;
+    max-height: 75vh; /* Increased from 70vh to 75vh for better visibility */
     width: auto;
     height: auto;
   }
   
   .mobile-controls {
     display: block;
+  }
+  
+  /* Ensure start screen buttons are visible on mobile */
+  button {
+    z-index: 1001 !important;
+    position: fixed !important;
   }
 }
 
@@ -131,6 +137,10 @@ body {
   .shoot-btn {
     width: 60px;
     height: 60px;
+  }
+  
+  #canvas {
+    max-height: 65vh; /* Reduce canvas height on very short screens */
   }
 }
 

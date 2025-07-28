@@ -13,8 +13,8 @@ const getCanvasDimensions = () => {
   if (mobile) {
     // Mobile: use most of the screen, leaving space for controls
     return {
-      CANVAS_WIDTH: Math.min(availableWidth - 20, 400),
-      CANVAS_HEIGHT: Math.min(availableHeight - 150, 600), // Leave space for mobile controls
+      CANVAS_WIDTH: Math.min(availableWidth - 20, 500), // Increased from 400 to 500
+      CANVAS_HEIGHT: Math.min(availableHeight - 180, 700), // Increased from 600 to 700, more space for controls
     };
   } else {
     // Desktop: use the original logic
@@ -27,10 +27,23 @@ const getCanvasDimensions = () => {
 
 export const CANVAS_DIMENSIONS = getCanvasDimensions();
 
-export const PLAYER_DIMENSIONS = {
-  PLAYER_WIDTH: 31,
-  PLAYER_HEIGHT: 55,
+// Scale player size based on device
+const getPlayerDimensions = () => {
+  const mobile = isMobile();
+  if (mobile) {
+    return {
+      PLAYER_WIDTH: 40, // Slightly larger on mobile
+      PLAYER_HEIGHT: 70,
+    };
+  } else {
+    return {
+      PLAYER_WIDTH: 31,
+      PLAYER_HEIGHT: 55,
+    };
+  }
 };
+
+export const PLAYER_DIMENSIONS = getPlayerDimensions();
 
 export const BUBBLE_DY = 0.5;
 export const BUBBLE_DX = 1.5;

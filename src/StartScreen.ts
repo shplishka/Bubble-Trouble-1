@@ -44,43 +44,89 @@ export class StartScreen {
     };
 
     this.foregroundImg.onload = () => {
-      this.ctx.drawImage(
-        this.foregroundImg,
-        CANVAS_DIMENSIONS.CANVAS_WIDTH - 400,
-        CANVAS_DIMENSIONS.CANVAS_HEIGHT - 400,
-        400,
-        400
-      );
+      const isMobile = window.innerWidth <= 768;
+      
+      if (isMobile) {
+        // Scale and position for mobile
+        const size = Math.min(CANVAS_DIMENSIONS.CANVAS_WIDTH * 0.8, 300);
+        const x = (CANVAS_DIMENSIONS.CANVAS_WIDTH - size) / 2;
+        const y = CANVAS_DIMENSIONS.CANVAS_HEIGHT - size - 20;
+        
+        this.ctx.drawImage(
+          this.foregroundImg,
+          x,
+          y,
+          size,
+          size
+        );
+      } else {
+        // Desktop positioning
+        this.ctx.drawImage(
+          this.foregroundImg,
+          CANVAS_DIMENSIONS.CANVAS_WIDTH - 400,
+          CANVAS_DIMENSIONS.CANVAS_HEIGHT - 400,
+          400,
+          400
+        );
+      }
+      
       this.drawTitle();
     };
 
-    this.onePlayerButton = this.createButton("One Player", 400, 300);
-    this.twoPlayersButton = this.createButton("Two Players", 400, 400);
-    this.createGameButton = this.createButton("Create Game", 400, 500);
+    const isMobile = window.innerWidth <= 768;
+    const baseY = isMobile ? 250 : 300;
+    const spacing = isMobile ? 80 : 100;
+    
+    this.onePlayerButton = this.createButton("One Player", 400, baseY);
+    this.twoPlayersButton = this.createButton("Two Players", 400, baseY + spacing);
+    this.createGameButton = this.createButton("Create Game", 400, baseY + spacing * 2);
   }
   drawTitle() {
-    this.ctx.font = '80px "Comic Sans MS", sans-serif';
+    const isMobile = window.innerWidth <= 768;
+    const fontSize = isMobile ? 48 : 80;
+    const yPosition = isMobile ? 100 : 150;
+    
+    this.ctx.font = `${fontSize}px "Comic Sans MS", sans-serif`;
     this.ctx.fillStyle = "white";
     this.ctx.strokeStyle = "red";
     this.ctx.lineWidth = 3;
     this.ctx.textAlign = "center";
-    this.ctx.fillText("Benpo Trouble", this.canvas.width / 2, 150);
-    this.ctx.strokeText("Benpo Trouble", this.canvas.width / 2, 150);
+    this.ctx.fillText("Benpo Trouble", this.canvas.width / 2, yPosition);
+    this.ctx.strokeText("Benpo Trouble", this.canvas.width / 2, yPosition);
   }
   createButton(text: string, x: number, y: number): HTMLButtonElement {
     const button = document.createElement("button");
     button.innerText = text;
     button.style.position = "absolute";
-    button.style.left = `${x}px`;
-    button.style.top = `${y}px`;
-    button.style.padding = "20px";
-    button.style.fontSize = "24px";
+    
+    // Make buttons responsive for mobile
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
+      // Center buttons horizontally and adjust vertically for mobile
+      button.style.left = "50%";
+      button.style.transform = "translateX(-50%)";
+      button.style.top = `${y + 50}px`; // Adjust position for mobile
+      button.style.padding = "15px 25px";
+      button.style.fontSize = "18px";
+      button.style.minWidth = "200px";
+    } else {
+      // Desktop positioning
+      button.style.left = `${x}px`;
+      button.style.top = `${y}px`;
+      button.style.padding = "20px";
+      button.style.fontSize = "24px";
+    }
+    
     button.style.border = "2px solid #8B4513"; // Wooden look
     button.style.backgroundColor = "red";
     button.style.color = "white";
     button.style.borderRadius = "10px";
     button.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.3)";
     button.style.cursor = "pointer";
+    button.style.zIndex = "1000";
+    button.style.fontFamily = "'Bubblegum Sans', cursive";
+    button.style.fontWeight = "bold";
+    
     document.body.appendChild(button);
     return button;
   }
